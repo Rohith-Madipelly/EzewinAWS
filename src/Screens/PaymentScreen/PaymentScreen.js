@@ -27,25 +27,6 @@ function PaymentScreen() {
   };
 
 
-//  
-// const createOrder = async (data) => {
-//   alert(data)
-//   const loginpp= {
-//     Price:49
-//   };
-
-//   axios.post("http://127.0.0.1:8001/api/payment/createOrder", {
-//     Price:49
-//   })
-//   .then((response) => {
-//     console.log(response.data);
-// alert(JSON.stringify(response.data.data))
-
-//   });
-
-  
-
-// };
 
 
 
@@ -62,7 +43,7 @@ const payMoney = async () => {
       return;
     }
 const Price=49
-    const order = await createOrder(Price * 100);
+    const order = await createOrder(Price);
     if (order?.data) {
       const options = {
         key: RAZORPAY_KEY,
@@ -146,16 +127,8 @@ const verifySignature = async (paymentData) => {
       navigate('/PaymentDone');
       console.log("rohith error see")
     }, 2000);
-
-    // updateFormMsg();
   }
 };
-
-
-
-
-
-
 
   return (
     <div>

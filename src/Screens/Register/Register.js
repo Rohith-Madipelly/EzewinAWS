@@ -34,9 +34,7 @@ function Register() {
             Gender: gender,
             Password: password
             // ConfirmPassword: confirmpassword,
-            
-
-        };
+           };
 
         axios.post(RegisterURL12, RegisterData)
             .then((response) => {

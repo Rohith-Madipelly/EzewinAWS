@@ -32,7 +32,7 @@ export const verifySignatureApi = async (paymentData) => {
   export const createOrder = async (amount) => {
     // const formData = new FormData();
     const loginpp= {
-            Price:50
+            Price:amount
           };
     // formData.append("Price", amount);
     // formData.append("reciep", "xyz143");

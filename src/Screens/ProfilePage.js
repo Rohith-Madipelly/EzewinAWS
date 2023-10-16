@@ -4,64 +4,39 @@ import './nav.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import {BASE_URL} from '../Enviornment'
+import {  useLocation } from "react-router-dom";
+
 const ProfilePage = () => {
+  const [id,setId]=useState("**********");
+  const [Name,setName]=useState("**********");
+  const [Email,setEmail]=useState("****************");
+  const [Phone_Number,setPhone_Number]=useState("**********");
+  const [Gender,setGender]=useState("******");
 
-  const BASE_URL = "http://127.0.0.1:8001/api/"
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState();
-  const [successMessage, setsuccessMessage] = useState();
-  const apiUrl1 = `${BASE_URL}/profile`;
+  useEffect(() => {
+    const fetchUserProfile = async (token) => {
+      try {
+       await axios.get(`${BASE_URL}profile`,{
+          headers: {
+            Authorization: `${token}`
+          }
+        }).then((res) => {
 
-  const navigate = useNavigate();
+          setId(res.data._id)
+          setName(res.data.Name)
+          setEmail(res.data.Email)
+          setPhone_Number(res.data.Phone_Number)
+          setGender(res.data.Gender)
+              })
 
-  const handleLogin = () => {
-   
-      const token = localStorage.getItem('token');
-      const caling=`http://127.0.0.1:8001/api/profile${token}`
-   
-    axios.post(caling)
-      .then((responsed) => {
-        // Handle the response on successful login
-        // alert(responsed.data.message)
-        // alert(responsed.data.Token)
-        // alert(responsed.data.Name)
-        alert(responsed)
-    
-      // Set the token in localStorage
-      // localStorage.setItem('token', responsed.data.Token);
-      setsuccessMessage(responsed.data.message)
-    
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
-
-
-        
-      })
-      .catch(error => {
-        // Handle errors
-        setErrorMessage(error.message)
-        console.error('Error during login:', error.message);
-      });
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+    const token = localStorage.getItem('token');
+    fetchUserProfile(token);
+  }, []);
 
   return (
     <section className='container py-2 marginTopper-80'>
@@ -91,7 +66,7 @@ const ProfilePage = () => {
                   <strong>Full Name</strong>
               </div>
               <div className="col-9">
-                 {/* Rohith Madipelly */}
+                 {Name}
               </div>
             </div>
             <hr/>
@@ -100,7 +75,7 @@ const ProfilePage = () => {
                    <strong>Email</strong>
               </div>
               <div className="col-9">
-                  {/* madipellyrohith@gmail.com */}
+              {Email}
               </div>
             </div>
             <hr/>
@@ -109,7 +84,7 @@ const ProfilePage = () => {
                    <strong>Gender</strong>
               </div>
               <div className="col-9">
-                  {/* Male */}
+                  {Gender}
               </div>
             </div>
             <hr/>
@@ -118,26 +93,26 @@ const ProfilePage = () => {
                   <strong>Phone</strong>
               </div>
               <div className="col-9">
-                  {/* 9951072005 */}
+                  {Phone_Number}
               </div>
             </div>
             <hr/>
             
-            <div className="row ms-1">
+            {/* <div className="row ms-1">
               <div className="col-3">
                   <strong>Address</strong>
               </div>
               <div className="col-9">
-                  {/* 11-24-140,2nd Bank Colony, Shanthi Nagar,Warangal,Telangana,India. */}
+                  11-24-140,2nd Bank Colony, Shanthi Nagar,Warangal,Telangana,India. 
               </div>
             </div>
-            <hr/>
+            <hr/> */}
             <div className="row ms-1">
               <div className="col-3">
               <strong>OrderId</strong>
               </div>
               <div className="col-9">
-                  Payment Pending <Link to='/PaymentScreen'>Pay 49 rs</Link>
+                  {id} <Link to='/PaymentScreen'>Pay 49 rs</Link>
                   
               </div>
             </div>
