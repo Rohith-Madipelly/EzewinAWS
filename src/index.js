@@ -14,6 +14,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from "react-redux";
 import { store } from './redux/store';
+import Registercp from './Screens/Register/Register copy';
 
 
 
@@ -28,6 +29,7 @@ root.render(
 
       <Header />
       <App/>
+      {/* <Registercp/> */}
     </BrowserRouter>
   
    {/* <Login2/> */}

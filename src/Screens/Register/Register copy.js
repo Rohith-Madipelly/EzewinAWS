@@ -44,48 +44,48 @@ function Register() {
 
     const handleRegister = () => {
 
-        // if (!userName) {
-        //     setError("Please enter your full name.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+        if (!userName) {
+            setError("Please enter your full name.");
+            return false;
+          }
+          else{
+            setError("");
+          }
       
-        //   if (phone.length !== 10) {
-        //     setError("Please enter 10 digit valid mobile number.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+          if (phone.length !== 10) {
+            setError("Please enter 10 digit valid mobile number.");
+            return false;
+          }
+          else{
+            setError("");
+          }
       
-        //   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-        //     setError("Please enter valid email address.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            setError("Please enter valid email address.");
+            return false;
+          }
+          else{
+            setError("");
+          }
       
-        //   if (!gender) {
-        //     setError("Please select gender.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+          if (!gender) {
+            setError("Please select gender.");
+            return false;
+          }
+          else{
+            setError("");
+          }
       
       
-        //   if (!terms) {
-        //     setError("Please accept the terms & conditions.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+          if (!terms) {
+            setError("Please accept the terms & conditions.");
+            return false;
+          }
+          else{
+            setError("");
+          }
           
-        //   setBtnDisabled(true);
+          setBtnDisabled(true);
 
 
 
@@ -164,14 +164,14 @@ function Register() {
 
 
     return (
-        <div>
+        <div className='Register'>
             <section className="vh-50 gradient-custom mt-5">
                 <div className="container py-5">
                     <div className="row d-flex justify-content-center align-items-cente">
                         <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                             <div className="card bg-coustm text-dark    hover12" style={{ borderRadius: "1rem" }}>
                                 <div className="card-body pt-5 text-center ">
-
+                                 <form>
                                     <div className="t-4 pb-4 r">
 
                                         <h2 className="fw-bold mb-2 text-uppercase text-dark">Register</h2>
@@ -191,6 +191,7 @@ function Register() {
                                                 >
 
                                                     <div>
+                                                        
                                                         <TextField id="outlined-Name-input" className='my-2 formobject text-white' label="User Full Name" placeholder="User Full Name" value={userName} onChange={(e) => setUserName(e.target.value)} required />  <br />
                                                         <TextField id="outlined-email-input" className='my-2 formobject text-white' label="User Email" placeholder="User Email" value={email} onChange={(e) => setEmail(e.target.value)} required />  <br />
                                                         <TextField id="outlined-phone-input" className='my-2 formobject text-white' label="Phone Number" placeholder="Phone Number" value={PhoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />  <br />
@@ -232,6 +233,7 @@ function Register() {
                                                             />
 
                                                         </div>
+                                                   
                                                     </div>
 
                                                 </Box>
@@ -246,7 +248,7 @@ function Register() {
 
 
                                         <button className="btn btn-primary btn-lg px-5 text-dark" type="submit" onClick={handleRegister}>Register</button>
-
+                                     
                                         {successMessage &&
                                             <div className='text-center bg-success'>
                                                 {successMessage}
@@ -262,7 +264,7 @@ function Register() {
                                         <p className="mb-0">Have an account? <Link to="/Login" className='text-dark'>Login</Link>
                                         </p>
                                     </div>
-
+                                    </form>
                                 </div>
                             </div>
                         </div>
