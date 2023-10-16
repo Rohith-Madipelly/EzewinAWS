@@ -1,32 +1,108 @@
 import React, { useState } from 'react'
+// UI Part
 import './Register.css'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { colors } from '@mui/material';
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
+//Router 
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import {BASE_URL} from '../../Enviornment'
-
-
-
-
 import { useNavigate } from "react-router-dom";
+
+//Api calls
+import axios from 'axios';
+import { BASE_URL } from '../../Enviornment'
+import { RegisterAPI } from "../../Services2/userApiCallings";
+
+
+
 function Register() {
+    //form fields
     const [userName, setUserName] = useState("")
     const [email, setEmail] = useState("")
     const [PhoneNumber, setPhoneNumber] = useState("")
     const [password, setpassword] = useState("")
     const [confirmpassword, setConfirmpassword] = useState("")
+    const [gender, setGender] = useState();
 
-    const [errorMessage, setErrorMessage] = useState();
+
+    const [terms, setTerms] = useState(false);
+    const [error, setError] = useState(false);
+    const [btnDisabled, setBtnDisabled] = useState(false);
+    const [phone, setphone] = useState(false);
+
+
+    //error display fields
     const [successMessage, setsuccessMessage] = useState();
-    const [gender,setGender] =useState();
+    const [errorMessage, setErrorMessage] = useState();
     const navigate = useNavigate();
 
-    const RegisterURL12 = "http://127.0.0.1:8001/api/register";
+    const RegisterURL12 = `${BASE_URL}register`;
 
     const handleRegister = () => {
+
+        if (!userName) {
+            setError("Please enter your full name.");
+            return false;
+          }
+          else{
+            setError("");
+          }
+      
+          if (phone.length !== 10) {
+            setError("Please enter 10 digit valid mobile number.");
+            return false;
+          }
+          else{
+            setError("");
+          }
+      
+          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            setError("Please enter valid email address.");
+            return false;
+          }
+          else{
+            setError("");
+          }
+      
+          if (!gender) {
+            setError("Please select gender.");
+            return false;
+          }
+          else{
+            setError("");
+          }
+      
+      
+          if (!terms) {
+            setError("Please accept the terms & conditions.");
+            return false;
+          }
+          else{
+            setError("");
+          }
+          
+          setBtnDisabled(true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const RegisterData = {
             Name: userName,
             Email: email,
@@ -34,33 +110,57 @@ function Register() {
             Gender: gender,
             Password: password
             // ConfirmPassword: confirmpassword,
-           };
+        };
 
         axios.post(RegisterURL12, RegisterData)
+            //    const response= RegisterAPI(userName,email,PhoneNumber,gender,password)
             .then((response) => {
-                // Handle the response on successful Register
 
-                setsuccessMessage("Registration Successful")
-                
-       
-        setTimeout(() => {
-            navigate('/Login');
-          }, 3000);
-  
-  
+                if (response?.status === 200) {
+                    // setsuccessMessage(response.message)
+                    console.error(response)
+                    setsuccessMessage("User registered successfully. Please login.");
+                    setTimeout(() => {
+                        setsuccessMessage("");
+                        navigate('/Login');
+                    }, 2000);
+                }
+
             })
             .catch((error) => {
-        
-                setErrorMessage('Error during Register:', error.message)
 
-         
+                setErrorMessage('Error during Register:', error)
+                console.error(error.data)
+                if (error.response) {
+
+                    if (error.response.status === 403) {
+                        setErrorMessage('User is already registered. Please Login ...');
+                    } else if (error.response.status === 402) {
+                        setErrorMessage('Invalid password.');
+                    } else if (error.response.status === 401) {
+                        setErrorMessage('Invalid user data.');
+                    } else if (error.response.status === 500) {
+                        setErrorMessage('Internal server error');
+                    } else {
+                        setErrorMessage('An error occurred during registration.');
+                    }
+                } else if (error.request) {
+                    setErrorMessage('No response received from the server.');
+                } else {
+                    setErrorMessage('Error setting up the request.');
+                }
+
 
                 setTimeout(() => {
                     setErrorMessage("")
                     navigate('/Register');
-                  }, 2000);
+                }, 2000);
             });
     };
+
+
+
+
 
 
     return (
@@ -103,10 +203,10 @@ function Register() {
                                                             label="Gender"
                                                             defaultValue="Male"
                                                             helperText="Please select your Gender"
-                                                           className='w-75'
+                                                            className='w-75'
                                                             value={gender}
-                                                           onChange={(e) => setGender(e.target.value)}
-                                                           required
+                                                            onChange={(e) => setGender(e.target.value)}
+                                                            required
                                                         >
                                                             <MenuItem value="Male">
                                                                 Male
@@ -119,6 +219,19 @@ function Register() {
                                                             </MenuItem>
 
                                                         </TextField>
+
+                                                    
+  
+                                                        <div className="mb-2">
+
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox value={terms} onChange={() => setTerms(!terms)} />
+                                                                }
+                                                                label="*I Accept Terms & Conditions of Ezewin"
+                                                            />
+
+                                                        </div>
                                                     </div>
 
                                                 </Box>
