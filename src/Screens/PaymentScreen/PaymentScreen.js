@@ -49,7 +49,7 @@ const Price=49
         key: RAZORPAY_KEY,
         amount: order.data.data.amount,
         currency: "INR",
-        name: "Self Steerings",
+        name: "Ezewin",
         description: `Wallet Transaction`,
         image: "",
         order_id: order.data.data.id,
