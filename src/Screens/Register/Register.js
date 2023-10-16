@@ -26,7 +26,7 @@ function Register() {
     const [PhoneNumber, setPhoneNumber] = useState("")
     const [password, setpassword] = useState("")
     const [confirmpassword, setConfirmpassword] = useState("")
-    const [gender, setGender] = useState();
+    const [gender, setGender] = useState("Male");
 
 
     const [terms, setTerms] = useState(false);
@@ -133,11 +133,11 @@ function Register() {
                 console.error(error.data)
                 if (error.response) {
 
-                    if (error.response.status === 403) {
+                    if (error.response.status === 409) {
                         setErrorMessage('User is already registered. Please Login ...');
-                    } else if (error.response.status === 402) {
-                        setErrorMessage('Invalid password.');
                     } else if (error.response.status === 401) {
+                        setErrorMessage('Please Enter Password must be 5+ characters with at least 1 uppercase, 1 lowercase, and 1 digit.');
+                    } else if (error.response.status === 404) {
                         setErrorMessage('Invalid user data.');
                     } else if (error.response.status === 500) {
                         setErrorMessage('Internal server error');

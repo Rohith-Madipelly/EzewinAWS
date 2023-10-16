@@ -27,19 +27,13 @@ function Login() {
     const loginData = {
       Email: email,
       Password: password
-
     };
     
 
     axios.post(apiUrl1, loginData)
       .then((responsed) => {
-        // Handle the response on successful login
-        // alert(responsed.data.message)
         // alert(responsed.data.Token)
-        // alert(responsed.data.Name)
-        
-    
-      // Set the token in localStorage
+    // Set the token in localStorage
       localStorage.setItem('token', responsed.data.Token);
       setsuccessMessage(responsed.data.message);
       dispatch(setToken(responsed.data.Token));
@@ -47,20 +41,40 @@ function Login() {
       setTimeout(() => {
         navigate('/Profile');
       }, 1000);
-
-
-        
+  
       })
       .catch(error => {
         // Handle errors
-        setErrorMessage(error.message)
-        console.error('Error during login:', error.message);
+        // setErrorMessage(error.message)
+        // console.error('Error during login:', error.message);
+        if (error.response) {
+
+          if (error.response.status === 401) {
+              setErrorMessage('You have Entered Invalid password');
+          } else if (error.response.status === 404) {
+              setErrorMessage('User Not Found');
+          }  else if (error.response.status === 500) {
+              setErrorMessage('Internal server error');
+          } else {
+              setErrorMessage('An error occurred during registration.');
+          }
+      } else if (error.request) {
+          setErrorMessage('No response received from the server.');
+      } else {
+          setErrorMessage('Error setting up the request.');
+      }
+
+
+
+
+
+
+
+
+
       });
      
   };
-
-
- 
 
   return (
     <div className='Login marginTopper-80'>

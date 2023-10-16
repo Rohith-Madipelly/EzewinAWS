@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './PaymentScreen.css'
 import moment from "moment";
-import { RAZORPAY_KEY, RAZORPAY_URL } from "../../environment";
+import { RAZORPAY_KEY, RAZORPAY_URL } from "../../Enviornment";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {verifySignatureApi, createOrder} from '../../Services2/ApiCalls'

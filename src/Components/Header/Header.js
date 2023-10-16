@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux"
 
 function Header() {
   const [HiddenLink, setHiddenLink] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const dispatch = useDispatch();
   // const loginSelector = useSelector((state) => state.loginReducer);
 
@@ -18,10 +18,9 @@ function Header() {
   }, []);
 
   const handleLogin = async () => {
-    // Assuming you have a successful login and received a token
-    // You would store the token in localStorage here
-    const token = 'YOUR_TOKEN';  // Replace with the actual token received from the API
-    localStorage.setItem('token', token);
+
+    // const token = 'YOUR_TOKEN'; 
+    // localStorage.setItem('token', token);
     
     // Update isLogin to indicate the user is logged in
     setIsLogin(true);
