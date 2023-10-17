@@ -26,7 +26,7 @@ function Register() {
     const [PhoneNumber, setPhoneNumber] = useState("")
     const [password, setpassword] = useState("")
     const [confirmpassword, setConfirmpassword] = useState("")
-    const [gender, setGender] = useState("Male");
+    const [gender, setGender] = useState();
 
 
     const [terms, setTerms] = useState(false);
@@ -44,48 +44,59 @@ function Register() {
 
     const handleRegister = () => {
 
-        // if (!userName) {
-        //     setError("Please enter your full name.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
+        if (!userName) {
+            setErrorMessage("Please enter your full name.");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
       
-        //   if (phone.length !== 10) {
-        //     setError("Please enter 10 digit valid mobile number.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
-      
-        //   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-        //     setError("Please enter valid email address.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
-      
-        //   if (!gender) {
-        //     setError("Please select gender.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
-      
-      
-        //   if (!terms) {
-        //     setError("Please accept the terms & conditions.");
-        //     return false;
-        //   }
-        //   else{
-        //     setError("");
-        //   }
           
-        //   setBtnDisabled(true);
+      
+          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            setErrorMessage("Please enter valid email address.");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
+
+
+          if (PhoneNumber.length !==10) {
+            setErrorMessage("Please enter 10 digit valid mobile number");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
+
+          if (confirmpassword !== password) {
+            setErrorMessage("Please enter Same Password");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
+
+          if (!gender) {
+            setErrorMessage("Please select gender.");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
+      
+      
+          if (!terms) {
+            setErrorMessage("Please accept the terms & conditions.");
+            return false;
+          }
+          else{
+            setErrorMessage("");
+          }
+          
+          setBtnDisabled(true);
 
 
 
@@ -113,6 +124,7 @@ function Register() {
         };
 
         axios.post(RegisterURL12, RegisterData)
+    
             //    const response= RegisterAPI(userName,email,PhoneNumber,gender,password)
             .then((response) => {
 
@@ -152,9 +164,17 @@ function Register() {
 
 
                 setTimeout(() => {
-                    setErrorMessage("")
+                    setErrorMessage("") 
+                    setUserName("")
+                     {setEmail("")
+                      setPhoneNumber("")
+                       setpassword("")
+                        setConfirmpassword("")
+                         setGender("")
+                          setTerms("")}
+                    setBtnDisabled(false);
                     navigate('/Register');
-                }, 2000);
+                }, 1000);
             });
     };
 
@@ -201,13 +221,14 @@ function Register() {
                                                             id="outlined-select-currency"
                                                             select
                                                             label="Gender"
-                                                            defaultValue="Male"
+                                                            defaultValue=""
                                                             helperText="Please select your Gender"
                                                             className='w-75'
                                                             value={gender}
                                                             onChange={(e) => setGender(e.target.value)}
                                                             required
                                                         >
+                          
                                                             <MenuItem value="Male">
                                                                 Male
                                                             </MenuItem>
@@ -245,7 +266,7 @@ function Register() {
 
 
 
-                                        <button className="btn btn-primary btn-lg px-5 text-dark" type="submit" onClick={handleRegister}>Register</button>
+                                        <button className="btn btn-primary btn-lg px-5 text-dark" type="submit" disabled={btnDisabled} onClick={handleRegister}>Register</button>
 
                                         {successMessage &&
                                             <div className='text-center bg-success'>

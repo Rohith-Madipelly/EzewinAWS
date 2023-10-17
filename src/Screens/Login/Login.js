@@ -24,11 +24,33 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    // e.preventDefault();
     const loginData = {
       Email: email,
       Password: password
     };
+
+
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      setErrorMessage("Please enter valid email address.");
+      return false;
+    }
+    else{
+      setErrorMessage("");
+    }
+
+
+    if (!password) {
+      setErrorMessage("Please enter your Password.");
+      return false;
+    }
+    else{
+      setErrorMessage("");
+    }
+
     
+
+
 
     axios.post(apiUrl1, loginData)
       .then((responsed) => {
