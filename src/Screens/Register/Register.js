@@ -19,6 +19,10 @@ import { RegisterAPI } from "../../Services2/userApiCallings";
 
 
 
+import { toast, ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
 function Register() {
     //form fields
     const [userName, setUserName] = useState("")
@@ -45,58 +49,71 @@ function Register() {
     const handleRegister = () => {
 
         if (!userName) {
-            setErrorMessage("Please enter your full name.");
-            return false;
-          }
-          else{
-            setErrorMessage("");
-          }
-      
-          
-      
-          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-            setErrorMessage("Please enter valid email address.");
-            return false;
-          }
-          else{
-            setErrorMessage("");
-          }
+            // setErrorMessage("Please enter your full name.");
+            toast.error('Please enter your full name.', { position: toast.POSITION.TOP_CENTER })
 
 
-          if (PhoneNumber.length !==10) {
-            setErrorMessage("Please enter 10 digit valid mobile number");
             return false;
-          }
-          else{
+        }
+        else {
             setErrorMessage("");
-          }
+        }
 
-          if (confirmpassword !== password) {
-            setErrorMessage("Please enter Same Password");
-            return false;
-          }
-          else{
-            setErrorMessage("");
-          }
 
-          if (!gender) {
-            setErrorMessage("Please select gender.");
+
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            // setErrorMessage("Please enter valid email address.");
+            toast.error('Please enter valid email address.', { position: toast.POSITION.TOP_CENTER })
+
             return false;
-          }
-          else{
+        }
+        else {
             setErrorMessage("");
-          }
-      
-      
-          if (!terms) {
-            setErrorMessage("Please accept the terms & conditions.");
+        }
+
+
+        if (PhoneNumber.length !== 10) {
+            // setErrorMessage("Please enter 10 digit valid mobile number");
+            toast.error('Please enter 10 digit valid mobile number', { position: toast.POSITION.TOP_CENTER })
+
             return false;
-          }
-          else{
+        }
+        else {
             setErrorMessage("");
-          }
-          
-          setBtnDisabled(true);
+        }
+
+        if (confirmpassword !== password) {
+            // setErrorMessage("Please enter Same Password");
+            toast.error('Please enter Same Password.', { position: toast.POSITION.TOP_CENTER })
+
+            return false;
+        }
+        else {
+            setErrorMessage("");
+        }
+
+        if (!gender) {
+            // setErrorMessage("Please select gender.");
+            toast.error('Please select gender.', { position: toast.POSITION.TOP_CENTER })
+
+            return false;
+        }
+        else {
+            setErrorMessage("");
+        }
+
+
+        if (!terms) {
+            // setErrorMessage("Please accept the terms & conditions.");
+            toast.error('Please accept the terms & conditions.', { position: toast.POSITION.TOP_CENTER })
+
+            return false;
+        }
+        else {
+            setErrorMessage("");
+        }
+
+        setBtnDisabled(true);
 
 
 
@@ -124,16 +141,18 @@ function Register() {
         };
 
         axios.post(RegisterURL12, RegisterData)
-    
+
             //    const response= RegisterAPI(userName,email,PhoneNumber,gender,password)
             .then((response) => {
 
                 if (response?.status === 200) {
                     // setsuccessMessage(response.message)
                     console.error(response)
-                    setsuccessMessage("User registered successfully. Please login.");
+                    // setsuccessMessage("User registered successfully. Please login.");
+                    toast.success("User registered successfully. Please login.", { position: toast.POSITION.TOP_CENTER })
+
                     setTimeout(() => {
-                        setsuccessMessage("");
+                        // setsuccessMessage("");
                         navigate('/Login');
                     }, 2000);
                 }
@@ -146,32 +165,48 @@ function Register() {
                 if (error.response) {
 
                     if (error.response.status === 409) {
-                        setErrorMessage('User is already registered. Please Login ...');
+                        toast.error('User is already registered. Please Login ...', { position: toast.POSITION.TOP_CENTER })
+
+                        // setErrorMessage('User is already registered. Please Login ...');
                     } else if (error.response.status === 401) {
-                        setErrorMessage('Please Enter Password must be 5+ characters with at least 1 uppercase, 1 lowercase, and 1 digit.');
+                        toast.error('Please Enter Password must be 5+ characters with at least 1 uppercase, 1 lowercase, and 1 digit.', { position: toast.POSITION.TOP_CENTER })
+
+                        // setErrorMessage('Please Enter Password must be 5+ characters with at least 1 uppercase, 1 lowercase, and 1 digit.');
                     } else if (error.response.status === 404) {
-                        setErrorMessage('Invalid user data.');
+                        toast.error('Invalid user data.', { position: toast.POSITION.TOP_CENTER })
+
+                        // setErrorMessage('Invalid user data.');
                     } else if (error.response.status === 500) {
-                        setErrorMessage('Internal server error');
+                        toast.error('Internal server error', { position: toast.POSITION.TOP_CENTER })
+
+                        // setErrorMessage('Internal server error');
                     } else {
-                        setErrorMessage('An error occurred during registration.');
+                        toast.error('An error occurred during registration.', { position: toast.POSITION.TOP_CENTER })
+
+                        // setErrorMessage('An error occurred during registration.');
                     }
                 } else if (error.request) {
-                    setErrorMessage('No response received from the server.');
+                    toast.error('No response received from the server.', { position: toast.POSITION.TOP_CENTER })
+
+                    // setErrorMessage('No response received from the server.');
                 } else {
-                    setErrorMessage('Error setting up the request.');
+                    toast.error('Error setting up the request.', { position: toast.POSITION.TOP_CENTER })
+
+                    // setErrorMessage('Error setting up the request.');
                 }
 
 
                 setTimeout(() => {
-                    setErrorMessage("") 
+                    setErrorMessage("")
                     setUserName("")
-                     {setEmail("")
-                      setPhoneNumber("")
-                       setpassword("")
+                    {
+                        setEmail("")
+                        setPhoneNumber("")
+                        setpassword("")
                         setConfirmpassword("")
-                         setGender("")
-                          setTerms("")}
+                        setGender("")
+                        setTerms("")
+                    }
                     setBtnDisabled(false);
                     navigate('/Register');
                 }, 1000);
@@ -184,7 +219,7 @@ function Register() {
 
 
     return (
-        <div>
+        <div className='Register'>
             <section className="vh-50 gradient-custom mt-5">
                 <div className="container py-5">
                     <div className="row d-flex justify-content-center align-items-cente">
@@ -228,7 +263,7 @@ function Register() {
                                                             onChange={(e) => setGender(e.target.value)}
                                                             required
                                                         >
-                          
+
                                                             <MenuItem value="Male">
                                                                 Male
                                                             </MenuItem>
@@ -241,8 +276,8 @@ function Register() {
 
                                                         </TextField>
 
-                                                    
-  
+
+
                                                         <div className="mb-2">
 
                                                             <FormControlLabel
@@ -267,6 +302,7 @@ function Register() {
 
 
                                         <button className="btn btn-primary btn-lg px-5 text-dark" type="submit" disabled={btnDisabled} onClick={handleRegister}>Register</button>
+                                        <ToastContainer></ToastContainer>
 
                                         {successMessage &&
                                             <div className='text-center bg-success'>

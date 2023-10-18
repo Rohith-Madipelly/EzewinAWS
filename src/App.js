@@ -17,9 +17,10 @@ import PaymentDone from './Screens/PaymentDone';
 import PaymentFailed from './Screens/PaymentFailed';
 import VerifyOtp from './Screens/VerifyOtp';
 
-
+import { useSelector } from "react-redux";
 
 function App() {
+  const loginSelector = useSelector((state) => state.loginReducer);
   return (
     <div className="App">
       <div>

@@ -5,14 +5,28 @@ import TextField from '@mui/material/TextField';
 import { colors } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {BASE_URL} from '../../Enviornment'
+import { BASE_URL } from '../../Enviornment'
 import { useNavigate } from "react-router-dom";
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import { toast, ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
 import { setToken } from '../../redux/actions/loginAction';
+import { useSelector } from "react-redux";
+
 
 function Login() {
+  const loginSelector = useSelector((state) => state.isLogin);
+  if (loginSelector.isLogin) {
+    dispatch(setToken(""));
+    // history.push("/");
+  } else {
+    // history.push("Login");
+  }
+
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,38 +46,47 @@ function Login() {
 
 
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      setErrorMessage("Please enter valid email address.");
+
+      toast.error('Please enter valid email address.', { position: toast.POSITION.TOP_CENTER })
+
+      // setErrorMessage("Please enter valid email address.");
       return false;
     }
-    else{
+    else {
       setErrorMessage("");
     }
 
 
     if (!password) {
-      setErrorMessage("Please enter your Password.");
+      toast.error('Please enter your Password.', { position: toast.POSITION.TOP_CENTER })
+
+      // setErrorMessage("Please enter your Password.");
       return false;
     }
-    else{
+    else {
       setErrorMessage("");
     }
 
-    
+
 
 
 
     axios.post(apiUrl1, loginData)
       .then((responsed) => {
         // alert(responsed.data.Token)
-    // Set the token in localStorage
-      localStorage.setItem('token', responsed.data.Token);
-      setsuccessMessage(responsed.data.message);
-      dispatch(setToken(responsed.data.Token));
-    
-      setTimeout(() => {
-        navigate('/Profile');
-      }, 1000);
-  
+        // Set the token in localStorage
+        localStorage.setItem('token', responsed.data.Token);
+
+
+        toast.success(responsed.data.message,{position:toast.POSITION.TOP_CENTER})
+
+        // setsuccessMessage(responsed.data.message);
+        dispatch(setToken(responsed.data.Token));
+
+        setTimeout(() => {
+          navigate('/Profile');
+        }, 1000);
+
       })
       .catch(error => {
         // Handle errors
@@ -72,19 +95,31 @@ function Login() {
         if (error.response) {
 
           if (error.response.status === 401) {
-              setErrorMessage('You have Entered Invalid password');
+            toast.error('You have Entered Invalid password', { position: toast.POSITION.TOP_CENTER })
+
+            // setErrorMessage('You have Entered Invalid password');
           } else if (error.response.status === 404) {
-              setErrorMessage('User Not Found');
-          }  else if (error.response.status === 500) {
-              setErrorMessage('Internal server error');
+            toast.error('User Not Found.', { position: toast.POSITION.TOP_CENTER })
+
+            // setErrorMessage('User Not Found');
+
+          } else if (error.response.status === 500) {
+            toast.error('Internal server error', { position: toast.POSITION.TOP_CENTER })
+
+            // setErrorMessage('Internal server error');
           } else {
-              setErrorMessage('An error occurred during registration.');
+            toast.error('An error occurred during registration.', { position: toast.POSITION.TOP_CENTER })
+
+            // setErrorMessage('An error occurred during registration.');
           }
-      } else if (error.request) {
-          setErrorMessage('No response received from the server.');
-      } else {
-          setErrorMessage('Error setting up the request.');
-      }
+        } else if (error.request) {
+          toast.error('No response received from the server.', { position: toast.POSITION.TOP_CENTER })
+          // setErrorMessage('No response received from the server');
+        } else {
+          toast.error('Error setting up the request.', { position: toast.POSITION.TOP_CENTER })
+
+          // setErrorMessage('Error setting up the request.');
+        }
 
 
 
@@ -95,7 +130,7 @@ function Login() {
 
 
       });
-     
+
   };
 
   return (
@@ -138,16 +173,20 @@ function Login() {
 
                     <p className="small mb-3 pb-lg-2"><a className="text-dark" href="#!">Forgot password?</a></p>
 
-                    <button className="btn btn-outline-dark btn-lg px-5"  onClick={handleLogin} type="submit">Login</button>
+                    <button className="btn btn-outline-dark btn-lg px-5" onClick={handleLogin} type="submit">Login</button>
+                    <ToastContainer></ToastContainer>
+
                     {successMessage &&
-                                            <div className='text-center bg-success'>
-                                                {successMessage}
-                                            </div>}
-                                        {errorMessage &&
-                                            <div className='text-center bg-danger'>
-                                                {errorMessage}
-                                            </div>}
-              
+
+                      <div className='text-center bg-success'>
+                        {successMessage}
+
+                      </div>}
+                    {errorMessage &&
+                      <div className='text-center bg-danger'>
+                        {errorMessage}
+                      </div>}
+
 
 
 
